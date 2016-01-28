@@ -803,8 +803,324 @@ public class XpayPayDAdaptor implements PayD{
     }
 }
 ////////////////////////////////////////////
+4.
+package Observer;
+
+import javax.management.Descriptor;
+import java.util.ArrayList;
+import java.util.Observable;
+/**
+ * Created by jeremysmith on 27/01/2016.
+ */
+public class CommentaryObject extends Observable implements Subject {
+
+    private Descriptor details;
+
+    public void subscribeObserver(Observer observer){
+        setChanged();
+        notifyObservers(observer);
+    }
+    public void unSubscribeObserver(Observer observer){
+        setChanged();
+        notifyObservers(observer);
+    }
+    public void notifyObservers(){
+        setChanged();
+    }
+    //Changed to String[] to allow return of Descriptor.getFieldNames()
+    public String[] subjectDetails(){
+        return details.getFieldNames();
+    }
+
+    public CommentaryObject(ArrayList observerArray, String detail) {
+
+        this.details.setField(detail,observerArray);
+
+    }
 
 
+    }
+/////////////////////////////////////////
+package Observer;
+
+/**
+ * Created by jeremysmith on 27/01/2016.
+ */
+public class SMSUsers implements Observer{
+
+    private Subject subject;
+    private String tag;
+
+    public SMSUsers(Subject subject, String tag){
+        this.subject=subject;
+        this.tag=tag;
+    }
+    @Override
+    public void update(String desc){
+
+    }
+    @Override
+    public void subscribe(){
+
+    }
+    @Override
+    public void unSubscribe(){
+
+    }
+}
+//////////////////////////////////////////
+5. Decorator
+
+package decorator;
+
+/**
+ * Created by jeremysmith on 27/01/2016.
+ */
+public class Ham extends PizzaDecorator {
+
+    public Ham(Pizza decoratedPizza){
+        super(decoratedPizza);
+    }
+
+    private String Desc;
+    private double Price;
+
+    public String getDesc(){
+        return "Ham";
+    }
+    public double getPrice(){
+        return 2.5;
+    }
+
+}
+/////////////////////////////////////////
+package decorator;
+
+/**
+ * Created by jeremysmith on 27/01/2016.
+ */
+public class Cheese extends PizzaDecorator {
+
+    public Cheese(Pizza decoratedPizza){
+        super(decoratedPizza);
+    }
+
+    private String Desc;
+    private double Price;
+
+    public String getDesc(){
+        return "Cheese";
+    }
+    public double getPrice(){
+        return 0.5;
+    }
+
+}
+///////////////////////////////////////
+package decorator;
+
+/**
+ * Created by jeremysmith on 28/01/2016.
+ */
+public class Mushroom extends PizzaDecorator {
+
+    public Mushroom(Pizza decoratedPizza){
+        super(decoratedPizza);
+    }
+
+    private String Desc;
+    private double Price;
+
+    public String getDesc(){
+        return "Mushroom";
+    }
+    public double getPrice(){
+        return 2.0;
+    }
+
+}
+/////////////////////////////////////
+package decorator;
+
+/**
+ * Created by jeremysmith on 28/01/2016.
+ */
+public class Pepperoni extends PizzaDecorator {
+
+    public Pepperoni(Pizza decoratedPizza){
+        super(decoratedPizza);
+    }
+
+    private String Desc;
+    private double Price;
+
+    public String getDesc(){
+        return "Pepperoni";
+    }
+    public double getPrice(){
+        return 2.5;
+    }
+}
+///////////////////////////////////
+package decorator;
+
+/**
+ * Created by jeremysmith on 27/01/2016.
+ */
+public class Chicken extends PizzaDecorator{
+
+    public Chicken(Pizza decoratedPizza){
+        super(decoratedPizza);
+    }
+
+    private String Desc;
+    private double Price;
+
+    public String getDesc(){
+        return "Chicken";
+    }
+    public double getPrice(){
+        return 3.0;
+    }
+
+}
+////////////////////////////////////
+package decorator;
+
+/**
+ * Created by jeremysmith on 27/01/2016.
+ */
+public class FetaCheese extends PizzaDecorator{
+    public FetaCheese(Pizza decoratedPizza){
+        super(decoratedPizza);
+    }
+
+    private String Desc;
+    private double Price;
+
+    public String getDesc(){
+        return "FetaCheese";
+    }
+    public double getPrice(){
+        return 1.5;
+    }
+}
+//////////////////////////////////
+package decorator;
+
+/**
+ * Created by jeremysmith on 27/01/2016.
+ */
+public class SimplyVegPizza implements Pizza {
+
+    private String Desc;
+    private double Price;
+
+    public String getDesc(){
+        return "Veggie";
+    }
+    public double getPrice(){
+        return 10.0;
+    }
+}
+//////////////////////////////////
+package decorator;
+
+/**
+ * Created by jeremysmith on 27/01/2016.
+ */
+public class SimplyNonVegPizza implements Pizza {
+
+    private String Desc;
+    private double Price;
+
+    public String getDesc(){
+        return "No Veg";
+    }
+    public double getPrice(){
+        return 12.5;
+    }
+
+}
+////////////////////////////////////
+package decorator;
+
+/**
+ * Created by jeremysmith on 27/01/2016.
+ */
+public interface Pizza {
+    String getDesc();
+    double getPrice();
+}
+////////////////////////////////////
+package decorator;
+
+/**
+ * Created by jeremysmith on 27/01/2016.
+ */
+public abstract class PizzaDecorator implements Pizza{
+
+    protected Pizza decoratedPizza;
+
+    public PizzaDecorator(Pizza decoratedPizza){
+        this.decoratedPizza=decoratedPizza;
+    }
+
+    private String Desc;
+    private double Price;
+
+    public String getDesc(){
+        return Desc;
+    }
+    public double getPrice(){
+        return Price;
+    }
+
+}
+//////////////////////////////////
+package decorator;
+
+import java.text.DecimalFormat;
+
+/**
+ * Created by jeremysmith on 28/01/2016.
+ */
+public class TestDecoratorPattern {
+    private static DecimalFormat dformat;
+
+    static {
+        dformat=new DecimalFormat("#.##");
+    }
+
+    public static void main(String[] args){
+        Pizza pizza = new SimplyVegPizza();
+        pizza = new Cheese(pizza);
+        print(pizza);
+
+        pizza = new FetaCheese(pizza);
+        print(pizza);
+
+        pizza = new Mushroom(pizza);
+        print(pizza);
+
+        Pizza pizza2 = new SimplyNonVegPizza();
+        pizza2 = new Pepperoni(pizza2);
+        print(pizza2);
+
+        pizza2 = new Ham(pizza2);
+        print(pizza2);
+
+        pizza2 = new Chicken(pizza2);
+        print(pizza2);
+
+    }
+
+    private static void print(Pizza pizza){
+        System.out.println("------------------");
+        System.out.println("Pizza Desc: " + pizza.getDesc());
+        System.out.println("Price: "+ dformat.format(pizza.getPrice()));
+        System.out.println("------------------\n");
+    }
 
 
-
+}
