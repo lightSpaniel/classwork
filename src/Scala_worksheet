@@ -325,6 +325,5 @@ val min2 = myDoubleVector.min
 val max1 = myIntVector.max
 val max2 = myDoubleVector.max
 
-5.
 
 
